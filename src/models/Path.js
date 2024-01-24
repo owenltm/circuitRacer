@@ -15,7 +15,7 @@ class Path {
 
     // Draw thick line for radius
     stroke(175);
-    strokeWeight(this.radius * 2);
+    strokeWeight(this.radius * 3);
     noFill();
     beginShape();
     for (let v of this.points) {

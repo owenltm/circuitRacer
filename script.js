@@ -22,8 +22,7 @@ function draw() {
   fill("#FFF");
   circle(target.x, target.y, 32);
 
-  vehicle.seek(target);
-  vehicle.applyForce();
+  vehicle.follow(path);
   vehicle.update();
   vehicle.show()
 
