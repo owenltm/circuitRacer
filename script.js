@@ -1,9 +1,14 @@
 let path;
 let vehicle;
 let target;
+let targetReachedRadius = 30;
+let pause = false;
+let pauseFrameDelay = 0;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
+
+  angleMode(DEGREES);
 
   vehicle = new Vehicle(random(window.innerWidth), random(window.innerHeight));
   vehicle.vel = createVector(4, 0);
@@ -14,6 +19,14 @@ function setup() {
 
 
 function draw() {
+  if(pause){
+    if(pauseFrameDelay < 5){
+      pauseFrameDelay++
+    } else {
+      return;
+    }
+  }
+
   background("#212121");
 
   vehicle.seek(target.pos);
@@ -23,8 +36,9 @@ function draw() {
   
   target.show();  
 
-  if((vehicle.pos.x == target.pos.x) && (vehicle.pos.y == target.pos.y)){
+  if(Math.abs(vehicle.pos.x - target.pos.x) < targetReachedRadius && Math.abs(vehicle.pos.y - target.pos.y) < targetReachedRadius){
     target.pos = createVector(random(window.innerWidth), random(window.innerHeight));
+    // pause = true;
   }
 }
 

@@ -5,13 +5,23 @@ class Vehicle {
     this.acc = createVector(0, 0);
     this.maxSpeed = 5;
     this.maxForce = 0.5;
-    this.r = 16;
+
+    this.limitTurningAngle = 90;
+    this.turningAngle = 0;
+    this.targetAngle = 0;
   }
 
   seek(target) {
     //calculate heading
     let force = p5.Vector.sub(target, this.pos);
+    
+    this.targetAngle = this.vel.angleBetween(force)
+    console.log(this.targetAngle);
+
+
     force.sub(this.vel);
+    force.limit(this.maxForce);
+    
     this.vel.add(force);
   }
 
@@ -21,7 +31,11 @@ class Vehicle {
 
   update() {
     //update movement sets
+
+    //limit the distance of movement over 1 loop, there for limiting speed
     this.vel.limit(this.maxSpeed);
+
+
     this.pos.add(this.vel);
   }
 
@@ -32,19 +46,32 @@ class Vehicle {
     translate(this.pos.x, this.pos.y);
     rotate(this.vel.heading());
     rect(-20, -10, 40, 20);
+  
+    
+    //show heading angle
+    fill("#F00");
+    rotate(this.targetAngle);
+    noStroke();
+    rect(0, 0, 40, 2);
+
+    //show heading angle
+    fill("#0F0");
+    rotate(90);
+    noStroke();
+    rect(0, 0, 40, 2);
     pop();
   }
 
   edges() {
-    if (this.pos.x > width + this.r) {
-      this.pos.x = -this.r;
-    } else if (this.pos.x < -this.r) {
-      this.pos.x = width + this.r;
+    if (this.pos.x > width) {
+      this.pos.x = 0;
+    } else if (this.pos.x < 0) {
+      this.pos.x = width;
     }
-    if (this.pos.y > height + this.r) {
-      this.pos.y = -this.r;
-    } else if (this.pos.y < -this.r) {
-      this.pos.y = height + this.r;
+    if (this.pos.y > height + 0) {
+      this.pos.y = 0;
+    } else if (this.pos.y < 0) {
+      this.pos.y = height;
     }
   }
 }
