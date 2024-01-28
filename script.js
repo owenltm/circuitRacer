@@ -1,29 +1,42 @@
 let path;
 let vehicle;
+let target;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
 
-  vehicle = new Vehicle(100, 100);
+  vehicle = new Vehicle(random(window.innerWidth), random(window.innerHeight));
+  vehicle.vel = createVector(4, 0);
 
-  path = new Path();
-  path.addPoint(window.innerWidth * 1/8, window.innerHeight * 1/5);
-  path.addPoint(window.innerWidth * 1/8, window.innerHeight * 4/5);
-  path.addPoint(window.innerWidth * 7/8, window.innerHeight * 4/5);
-  path.addPoint(window.innerWidth * 7/8, window.innerHeight * 1/5);
+
+  target = new Target(random(window.innerWidth), random(window.innerHeight));
 }
 
 
 function draw() {
   background("#212121");
-  path.show();
 
-  target = createVector(mouseX, mouseY);
-  fill("#FFF");
-  circle(target.x, target.y, 32);
-
-  vehicle.follow(path);
+  vehicle.seek(target.pos);
   vehicle.update();
-  vehicle.show()
+  vehicle.edges();
+  vehicle.show();
+  
+  target.show();  
 
+  if((vehicle.pos.x == target.pos.x) && (vehicle.pos.y == target.pos.y)){
+    target.pos = createVector(random(window.innerWidth), random(window.innerHeight));
+  }
+}
+
+class Target{
+  constructor(x, y) {
+    this.pos = createVector(x, y);
+  }
+
+  show() {
+    fill("#FFF");
+    push();
+    circle(this.pos.x, this.pos.y, 32);
+    pop();
+  }
 }
