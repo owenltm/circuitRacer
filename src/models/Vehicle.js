@@ -6,7 +6,7 @@ class Vehicle {
     this.maxSpeed = 5;
     this.maxForce = 0.5;
 
-    this.limitTurningAngle = 90;
+    this.limitTurningAngle = 45;
     this.turningAngle = 0;
     this.targetAngle = 0;
   }
@@ -16,8 +16,7 @@ class Vehicle {
     let force = p5.Vector.sub(target, this.pos);
     
     this.targetAngle = this.vel.angleBetween(force)
-    console.log(this.targetAngle);
-
+    this.turningAngle = this.vel.angleBetween(force);
 
     force.sub(this.vel);
     force.limit(this.maxForce);
@@ -53,10 +52,11 @@ class Vehicle {
     rotate(this.targetAngle);
     noStroke();
     rect(0, 0, 40, 2);
+    rotate(-this.targetAngle);
 
     //show heading angle
     fill("#0F0");
-    rotate(90);
+    rotate(this.turningAngle);
     noStroke();
     rect(0, 0, 40, 2);
     pop();
